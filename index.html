@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Happiness Generator</title>
+    <meta name="description" content="Tap for affirmations, quotes, and self-care reminders designed to brighten your day.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+    <div class="ambient-backdrop" aria-hidden="true"></div>
+    <div class="app-shell">
+        <header class="top-bar">
+            <div class="brand">
+                <span class="brand-icon" aria-hidden="true">🌿</span>
+                <div class="brand-text">
+                    <h1>Daily Happiness Generator</h1>
+                    <p>Little boosts of joy, ready whenever you are.</p>
+                </div>
+            </div>
+            <button id="modeToggle" class="mode-toggle" type="button" aria-label="Switch to dark mode">
+                <span class="mode-label">Light</span>
+                <span class="mode-icon" aria-hidden="true">☀️</span>
+            </button>
+        </header>
+
+        <main class="main-stage">
+            <section class="generator-card" aria-live="polite">
+                <div class="card-intro">
+                    <span class="sparkle" aria-hidden="true">✨</span>
+                    <span class="intro-label">Your curated happiness trio</span>
+                </div>
+
+                <div class="message-grid">
+                    <article class="message-block" data-type="affirmation">
+                        <h2>Positive Affirmation</h2>
+                        <p id="affirmationText">Tap the button below to reveal a reminder of your brilliance.</p>
+                    </article>
+
+                    <article class="message-block" data-type="quote">
+                        <h2>Motivational Quote</h2>
+                        <p id="quoteText">Daily sparks of motivation land here.</p>
+                    </article>
+
+                    <article class="message-block" data-type="self-care">
+                        <h2>Self-Care Suggestion</h2>
+                        <p id="selfCareText">Gentle nudges for your wellbeing will appear after your tap.</p>
+                    </article>
+                </div>
+
+                <button id="generateButton" class="generate-btn" type="button">
+                    Make Me Happy
+                </button>
+
+                <p class="microcopy">Need another lift? Tap as often as you like — happiness is refillable.</p>
+            </section>
+
+            <section class="support-grid" aria-label="Additional happiness tools">
+                <article class="support-card selfie-card">
+                    <header class="support-header">
+                        <div class="support-badge" aria-hidden="true">📸</div>
+                        <div>
+                            <h2>Selfie Compliment Studio</h2>
+                            <p>Upload a quick selfie to receive a gentle boost from our compassion engine.</p>
+                        </div>
+                    </header>
+
+                    <form id="selfieForm" class="selfie-form" autocomplete="off">
+                        <label class="file-trigger" for="selfieInput">
+                            <span class="file-icon" aria-hidden="true">💗</span>
+                            <span class="file-text">Tap to upload or snap a selfie</span>
+                            <input id="selfieInput" type="file" accept="image/*" capture="environment">
+                        </label>
+
+                        <div class="selfie-preview" id="selfiePreview" hidden>
+                            <img id="selfiePreviewImg" src="" alt="Your uploaded selfie preview">
+                            <button type="button" class="preview-clear" id="clearSelfie">
+                                <span aria-hidden="true">✕</span>
+                                <span class="sr-only">Remove selected selfie</span>
+                            </button>
+                        </div>
+
+                        <button type="submit" id="selfieSubmit" class="secondary-btn" disabled>
+                            Send a kind compliment
+                        </button>
+                    </form>
+
+                    <div class="selfie-response" id="selfieResponse" hidden>
+                        <p id="selfieCompliment"></p>
+                    </div>
+                </article>
+
+                <article class="support-card chat-card">
+                    <header class="support-header">
+                        <div class="support-badge" aria-hidden="true">💬</div>
+                        <div>
+                            <h2>Sunny Chat Companion</h2>
+                            <p>Share a thought and receive a caring, practical note to support your day.</p>
+                        </div>
+                    </header>
+
+                    <div class="chat-panel" aria-live="polite">
+                        <div class="chat-log" id="chatLog"></div>
+                    </div>
+
+                    <form id="chatForm" class="chat-controls" autocomplete="off">
+                        <label class="sr-only" for="chatInput">Share how you're feeling</label>
+                        <input id="chatInput" name="message" type="text" placeholder="Type a thought or question..." required minlength="2">
+                        <button type="submit" id="chatSend" class="secondary-btn">Send</button>
+                    </form>
+                </article>
+
+                <article class="support-card game-card">
+                    <header class="support-header">
+                        <div class="support-badge" aria-hidden="true">🎮</div>
+                        <div>
+                            <h2>Happy Emoji Match</h2>
+                            <p>Match pairs of emojis to unlock joy and collect happiness points.</p>
+                        </div>
+                    </header>
+
+                    <div class="game-controls">
+                        <div class="game-stats">
+                            <span class="stat-label">Matches:</span>
+                            <span class="stat-value" id="gameMatches">0</span>
+                        </div>
+                        <button type="button" id="gameReset" class="secondary-btn">New Game</button>
+                    </div>
+
+                    <div class="game-board" id="gameBoard" aria-label="Emoji matching game board"></div>
+
+                    <div class="game-feedback" id="gameFeedback" hidden>
+                        <p id="gameMessage"></p>
+                    </div>
+                </article>
+
+                <article class="support-card blast-game-card">
+                    <header class="support-header">
+                        <div class="support-badge" aria-hidden="true">💥</div>
+                        <div>
+                            <h2>Emoji Blast</h2>
+                            <p>Click popping emojis before they disappear! Speed and accuracy earn you points.</p>
+                        </div>
+                    </header>
+
+                    <div class="blast-game-controls">
+                        <div class="blast-stat">
+                            <span class="blast-label">Score</span>
+                            <span class="blast-value" id="blastScore">0</span>
+                        </div>
+                        <div class="blast-stat">
+                            <span class="blast-label">Time</span>
+                            <span class="blast-value" id="blastTimer">30</span>
+                        </div>
+                        <div class="blast-stat">
+                            <span class="blast-label">Combo</span>
+                            <span class="blast-value" id="blastCombo">0x</span>
+                        </div>
+                    </div>
+
+                    <div class="blast-game-arena" id="blastArena" aria-label="Click appearing emojis game arena"></div>
+
+                    <div class="blast-controls">
+                        <button type="button" id="blastStart" class="secondary-btn">Start Game</button>
+                        <button type="button" id="blastStop" class="secondary-btn" disabled hidden>Stop Game</button>
+                    </div>
+
+                    <div class="blast-results" id="blastResults" hidden>
+                        <p id="blastResultsText"></p>
+                    </div>
+                </article>
+
+                <article class="support-card pop-game-card">
+                    <header class="support-header">
+                        <div class="support-badge" aria-hidden="true">💣</div>
+                        <div>
+                            <h2>Emoji Pop Frenzy</h2>
+                            <p>Pop as many happy emojis as you can! Click rapidly to maximize your score!</p>
+                        </div>
+                    </header>
+
+                    <div class="pop-stats">
+                        <div class="pop-stat">
+                            <span class="pop-label">Score</span>
+                            <span class="pop-value" id="popScore">0</span>
+                        </div>
+                        <div class="pop-stat">
+                            <span class="pop-label">Target</span>
+                            <span class="pop-value" id="popTarget" style="font-size: 2rem;">-</span>
+                        </div>
+                        <div class="pop-stat">
+                            <span class="pop-label">Time</span>
+                            <span class="pop-value" id="popTimer">30</span>
+                        </div>
+                        <div class="pop-stat">
+                            <span class="pop-label">High Score</span>
+                            <span class="pop-value" id="popHighScore">0</span>
+                        </div>
+                    </div>
+
+                    <div class="pop-game-grid" id="popGameGrid"></div>
+
+                    <div class="pop-controls">
+                        <button type="button" id="popStartBtn" class="secondary-btn">START POPPING!</button>
+                        <button type="button" id="popReplayBtn" class="secondary-btn" hidden>PLAY AGAIN</button>
+                    </div>
+
+                    <div class="pop-game-over" id="popGameOver" hidden>
+                        <p id="popGameOverText"></p>
+                    </div>
+                </article>
+            </section>
+        </main>
+
+        <footer class="footer-note">
+            <span aria-hidden="true">☕</span>
+            <span>Take a mindful sip while you enjoy today&rsquo;s dose of joy.</span>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
