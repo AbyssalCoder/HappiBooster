@@ -1,4 +1,4 @@
-# 🎭 MoodMirror
+# 🎭 HappiBooster
 
 **Emotion Detection & Wellness Companion**
 
@@ -229,3 +229,4 @@ This project is for educational and personal use.
 ---
 
 **Made with ❤️ for emotional wellness**
+
